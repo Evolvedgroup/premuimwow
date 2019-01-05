@@ -1267,8 +1267,8 @@ client.on('message', message => {
         if(!welcome[message.guild.id]) welcome[message.guild.id] = {
           onoff: 'Off'
         }
-          if(welcome[message.guild.id].offon === 'Off') return [message.channel.send(`**The Welcome Is __𝐎𝐍__ !**`), welcome[message.guild.id].onoff = 'On']
-          if(welcome[message.guild.id].onoff === 'On') return [message.channel.send(`**The Welcome Is __𝐎𝐅𝐅__ !**`), welcome[message.guild.id].onoff = 'Off']
+          if(welcome[message.guild.id].onoff === 'Off') return [message.channel.send(`**The Welcome Is __𝐎𝐍__ !**`), welcome[message.guild.id].onoff = 'On']
+          if(welcome[message.guild.id].by === 'On') return [message.channel.send(`**The Welcome Is __𝐎𝐅𝐅__ !**`), welcome[message.guild.id].onoff = 'Off']
           fs.writeFile("./welcome.json", JSON.stringify(welcome), (err) => {
             if (err) console.error(err)
             .catch(err => {
