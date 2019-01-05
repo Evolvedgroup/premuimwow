@@ -1252,7 +1252,7 @@ let embed = new Discord.RichEmbed()
 message.channel.sendEmbed(embed)
 welcome[message.guild.id] = {
 channel: room,
-onoff: 'On',
+by: 'On',
 by: 'Off'
 }
 fs.writeFile("./welcomer.json", JSON.stringify(welcome), (err) => {
