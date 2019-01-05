@@ -1265,9 +1265,9 @@ client.on('message', message => {
         if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
         if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
         if(!welcome[message.guild.id]) welcome[message.guild.id] = {
-          onoff: 'Off'
+          by: 'Off'
         }
-          if(welcome[message.guild.id].onoff === 'Off') return [message.channel.send(`**The Welcome Is __𝐎𝐍__ !**`), welcome[message.guild.id].onoff = 'On']
+          if(welcome[message.guild.id].by === 'Off') return [message.channel.send(`**The Welcome Is __𝐎𝐍__ !**`), welcome[message.guild.id].onoff = 'On']
           if(welcome[message.guild.id].by === 'On') return [message.channel.send(`**The Welcome Is __𝐎𝐅𝐅__ !**`), welcome[message.guild.id].onoff = 'Off']
           fs.writeFile("./welcome.json", JSON.stringify(welcome), (err) => {
             if (err) console.error(err)
