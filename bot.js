@@ -1230,106 +1230,54 @@ client.on('message',async message => {
 });
 
 
+//startwelcome//
 const welcome = JSON.parse(fs.readFileSync('./welcomer.json' , 'utf8'));
  
-fs.writeFile("./welcome.json", JSON.stringify(welcome), (err) => {
-	const sWlc = {}
 client.on('message', message => {
-var prefix = "+";
-if(message.channel.type === "dm") return;
-if(message.author.bot) return;
-  if(!sWlc[message.guild.id]) sWlc[message.guild.id] = {
-    channel: "welcome"
+           if (!message.channel.guild) return;
+
+    let room = message.content.split(" ").slice(1);
+    let findroom = message.guild.channels.find('name', `${room}`)
+    if(message.content.startsWith(prefix + "setWelcomer")) {
+        if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
+        if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
+if(!room) return message.channel.send('Please Type The Channel Name')
+if(!findroom) return message.channel.send('Cant Find This Channel')
+let embed = new Discord.RichEmbed()
+.setTitle('**Done The Welcome Code Has Been Setup**')
+.addField('Channel:', `${room}`)
+.addField('Requested By:', `${message.author}`)
+.setThumbnail(message.author.avatarURL)
+.setFooter(`${client.user.username}`)
+message.channel.sendEmbed(embed)
+welcome[message.guild.id] = {
+channel: room,
+onoff: 'On',
+by: 'Off'
 }
-const channel = sWlc[message.guild.id].channel
-  if (message.content.startsWith(prefix + "setwelcomer")) {
-    if(!message.member.hasPermission(`MANAGE_GUILD`)) return;
-    let newChannel = message.content.split(' ').slice(1).join(" ")
-    if(!newChannel) return message.reply(`**${prefix}setwelcomer <channel name>**`)
-    sWlc[message.guild.id].channel = newChannel
-    message.channel.send(`**${message.guild.name}'s channel has been changed to ${newChannel}**`);
-  }
-});
-
-client.on("guildMemberAdd", member => {
-      if(!sWlc[member.guild.id]) sWlc[member.guild.id] = {
-    channel: "welcome"
-  }
-  const channel = sWlc[member.guild.id].channel
-    const sChannel = sWlc[member.guild.id].channel
-    let welcomer = member.guild.channels.find('name', sChannel);
-    let memberavatar = member.user.avatarURL
-      if (!welcomer) return;
-      if(welcomer) {
-         moment.locale('ar-ly');
-         var h = member.user;
-        let heroo = new Discord.RichEmbed()
-        .setColor('RANDOM')
-        .setThumbnail(h.avatarURL)
-        .setAuthor(h.username,h.avatarURL)
-        .addField(': تاريخ دخولك الدسكورد',`${moment(member.user.createdAt).format('D/M/YYYY h:mm a')} **\n** \`${moment(member.user.createdAt).fromNow()}\``,true)            
-         .addField(': تاريخ دخولك السيرفر',`${moment(member.joinedAt).format('D/M/YYYY h:mm a ')} \n\`\`${moment(member.joinedAt).startOf(' ').fromNow()}\`\``, true)      
-         .setFooter(`${h.tag}`,"https://images-ext-2.discordapp.net/external/JpyzxW2wMRG2874gSTdNTpC_q9AHl8x8V4SMmtRtlVk/https/orcid.org/sites/default/files/files/ID_symbol_B-W_128x128.gif")
-     welcomer.send({embed:heroo});          
-         
-      var Canvas = require('canvas')
-      var jimp = require('jimp')
-     const w = ['swlc.png'];
-      
-              let Image = Canvas.Image,
-                  canvas = new Canvas(557, 241),
-                  ctx = canvas.getContext('2d');
+fs.writeFile("./welcomer.json", JSON.stringify(welcome), (err) => {
+if (err) console.error(err)
+})
+    }})
+client.on('message', message => {
   
-              fs.readFile(`${w[Math.floor(Math.random() * w.length)]}`, function (err, Background) {
-                  if (err) return console.log(err)
-                  let BG = Canvas.Image;
-                  let ground = new Image;
-                  ground.src = Background;
-                  ctx.drawImage(ground, 0, 0, 557, 241);
-      
-      })
-      
-                      let url = member.user.displayAvatarURL.endsWith(".webp") ? member.user.displayAvatarURL.slice(5, -20) + ".gif" : member.user.displayAvatarURL;
-                      jimp.read(url, (err, ava) => {
-                          if (err) return console.log(err);
-                          ava.getBuffer(jimp.MIME_PNG, (err, buf) => {
-                              if (err) return console.log(err);
-      
-                                    ctx.font = '30px Arial Bold';
-                              ctx.fontSize = '20px';
-                              ctx.fillStyle = "#FFFFFF";
-                                ctx.fillText(member.user.username, 245, 150);
-                              
-                              //NAMEً
-                              ctx.font = '30px Arial';
-                              ctx.fontSize = '28px';
-                              ctx.fillStyle = "#FFFFFF";
-      ctx.fillText(`Welcome To Dalida`, 245, 80);
-    
-                              //AVATARً
-                              let Avatar = Canvas.Image;
-                              let ava = new Avatar;
-                              ava.src = buf;
-                              ctx.beginPath();
-                 ctx.arc(120.8, 120.5, 112.3, 0, Math.PI*2, true);
-                   ctx.closePath();
-                   
-                                 ctx.clip();
-
-                        ctx.drawImage(ava, 7, 8, 227, 225);
-                              ctx.closePath();
-
-                            
-    welcomer.sendFile(canvas.toBuffer())
-      
-      
-      
-      })
-      })
-      
-      }
-      });
-     });
+    if(message.content.startsWith(prefix + "toggleWelcome")) {
+        if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
+        if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
+        if(!welcome[message.guild.id]) welcome[message.guild.id] = {
+          onoff: 'Off'
+        }
+          if(welcome[message.guild.id].onff === 'Off') return [message.channel.send(`**The Welcome Is __𝐎𝐍__ !**`), welcome[message.guild.id].onoff = 'On']
+          if(welcome[message.guild.id].onoff === 'On') return [message.channel.send(`**The Welcome Is __𝐎𝐅𝐅__ !**`), welcome[message.guild.id].onoff = 'Off']
+          fs.writeFile("./welcome.json", JSON.stringify(welcome), (err) => {
+            if (err) console.error(err)
+            .catch(err => {
+              console.error(err);
+          });
+            })
+          }
+          
+        })
 
         client.on('message', message => {
   
@@ -1351,6 +1299,67 @@ client.on("guildMemberAdd", member => {
                   
                 })
                 
+
+client.on('guildMemberAdd',async member => {
+    if(welcome[member.guild.id].onoff === 'Off') return;
+    const Canvas = require('canvas');
+    const jimp = require('jimp');
+    const w = ['./welcome_4.png'];
+          let Image = Canvas.Image,
+              canvas = new Canvas(800, 300),
+              ctx = canvas.getContext('2d');
+          ctx.patternQuality = 'bilinear';
+          ctx.filter = 'bilinear';
+          ctx.antialias = 'subpixel';
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+          ctx.shadowOffsetY = 2;
+          ctx.shadowBlur = 2;
+          ctx.stroke();
+          ctx.beginPath();
+   
+          fs.readFile(`${w[Math.floor(Math.random() * w.length)]}`, function (err, Background) {
+              if (err) return console.log(err);
+              let BG = Canvas.Image;
+              let ground = new Image;
+              ground.src = Background;
+              ctx.drawImage(ground, 0, 0, 800, 300);
+   
+  })
+   
+                  let url = member.user.displayAvatarURL.endsWith(".webp") ? member.user.displayAvatarURL.slice(5, -20) + ".png" : member.user.displayAvatarURL;
+                  jimp.read(url, (err, ava) => {
+                      if (err) return console.log(err);
+                      ava.getBuffer(jimp.MIME_PNG, (err, buf) => {
+                   if (err) return console.log(err);
+   
+            ctx.font = '36px Arial';
+            ctx.fontSize = '72px';
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.fillText(member.user.username, 545, 177);
+           
+            ctx.font = '16px Arial Bold';
+            ctx.fontSize = '72px';
+            ctx.fillStyle = "#ffffff";
+            ctx.textAlign = "center";
+            ctx.fillText(`${member.guild.memberCount} Members`, 580, 200);
+           
+            let Avatar = Canvas.Image;
+            let ava = new Avatar;
+            ava.src = buf;
+            ctx.beginPath();
+            ctx.arc(169.5, 148, 126.9, -100, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.clip();
+            ctx.drawImage(ava, 36, 21, 260, 260);
+             
+            let c = member.guild.channels.find('name', `${welcome[member.guild.id].channel}`)
+            if(!c) return;
+            c.sendFile(canvas.toBuffer());
+   
+  });
+  });
+  });
 
   const invites = {};
 
