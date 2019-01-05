@@ -302,7 +302,7 @@ function play(guild, song) {
 
 
 client.on('message', message => {
-    if (message.content === '+help') {
+    if (message.content === '+helpmu') {
         let helpEmbed = new Discord.RichEmbed()
         .setTitle('**أوامر الميوزك...**')
         .setDescription('**(+) برفكس البوت **')
@@ -644,6 +644,26 @@ client.on('message', message => {
     }
 }
 });
+
+client.on('message' , message => {
+        if (message.author.bot) return;
+        if (message.content.startsWith(prefix + "sug")) {
+        if (!message.channel.guild) return;
+        let args = message.content.split(" ").slice(1).join(" ");
+        client.channels.get("531121787732361227").send(
+            "\n" + "**" + " ● Suggested By : " + "**" +
+            "\n" + "**" + "» " + message.author.tag + "**" +
+            "\n" + "**" + " ● Suggest : " + "**" +
+            "\n" + "**" + args + "**")
+        
+        let embed = new Discord.RichEmbed()
+             .setAuthor(message.author.username, message.author.avatarURL)
+             .setDescription(' Suggested Sent')
+             .setThumbnail(message.author.avatarURL)
+             .setFooter("Fras#9999")
+        message.channel.send(embed);
+}
+ });
 
 client.on("message", msg => {
   if(msg.content === '+' + "id") {
@@ -1164,7 +1184,9 @@ if (message.content === "+help") {
 const embed = new Discord.RichEmbed()
    .setColor("RANDOM")
    .setDescription(`
-==================== Management commands =====================
+=======================================================
++sug والاقتراح او الخطا في البوت وسيتم الرد عليك 
+========================= الاوامر ======================
 +autorole ➾ لاعطاء شخص رتبه معينه اثناء دخوله
 +bc ➾ لارسال رساله لكل اعضاء السرفر
 +ban [@mention] [reason] ➾ لاعطاء شخص بان من السرفر
@@ -1185,12 +1207,11 @@ const embed = new Discord.RichEmbed()
 +setuser ➾ لصنع روم بعدد اعضاء السرفر
 +trg ➾ للعب لعبة الترجمة
 +role help ➾ لاوامر اعطاء الرتب بالتفصيل
-+helpmusic ➾ لاوامر الميوزك بالتفصيل
-+
++helpmu ➾ لاوامر الميوزك بالتفصيل
 =========================================================
 Support server : https://discord.gg/zny923R
 =========================================================
-لعدوة البوت : https://liptonbot.netlify.com/        
+لعدوة البوت العادي : https://liptonbot.ga/      
 `)
 message.author.sendEmbed(embed)
  
